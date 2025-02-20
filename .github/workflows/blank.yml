@@ -29,9 +29,17 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
-      # Install OpenCV
-      - name: Setup OpenCV
-        uses: Dovyski/setup-opencv-action@v1.1
+      - name: Cache OpenCV
+        id: cache-open-cv
+        uses: actions/cache@v1
+        with:
+          path: ../OpenCV
+          key: ${{ runner.os }}-OpenCVCache
+      
+      - name: Install OpenCV
+        uses: florianblume/install-opencv-action@v1
+        with:
+          cached: ${{ steps.cache-open-cv.outputs.cache-hit }}
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
